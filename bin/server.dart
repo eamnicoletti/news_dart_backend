@@ -1,6 +1,7 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+import 'api/login_api.dart';
 import 'infra/custom_server.dart';
 
 // Configure routes.
@@ -18,5 +19,5 @@ Response _echoHandler(Request request) {
 }
 
 void main(List<String> args) async {
-  CustomServer().initialize(_router);
+  await CustomServer().initialize(LoginApi().handler);
 }
