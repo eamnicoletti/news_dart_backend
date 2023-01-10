@@ -4,6 +4,7 @@ import 'package:shelf_router/shelf_router.dart';
 import 'apis/blog_api.dart';
 import 'apis/login_api.dart';
 import 'infra/custom_server.dart';
+import 'services/noticia_service.dart';
 import 'utils/custom_env.dart';
 
 // Configure routes.
@@ -26,7 +27,7 @@ void main(List<String> args) async {
         LoginApi().handler,
       )
       .add(
-        BlogApi().handler,
+        BlogApi(NoticiaService()).handler,
       )
       .handler;
 
