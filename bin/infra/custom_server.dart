@@ -1,16 +1,16 @@
 import 'dart:io';
 
 import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart';
+import 'package:shelf/shelf_io.dart' as shelf_io;
 
 class CustomServer {
-  Future<void> initialize(Handler handler) async {
+  Future<void> initialize({
+    required Handler handler,
+    required String address,
+    required int port,
+  }) async {
     // Use any available host or container IP (usually `0.0.0.0`).
-    final ip = InternetAddress.anyIPv4;
-
-    // For running in containers, we respect the PORT environment variable.
-    final port = int.parse(Platform.environment['PORT'] ?? '8080');
-    final server = await serve(handler, ip, port);
-    print('Server listening on port ${server.port}');
+    await shelf_io.serve(handler, address, port);
+    print('Server listening on -> http://$address:$port');
   }
 }
