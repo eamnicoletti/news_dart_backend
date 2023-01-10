@@ -1,6 +1,7 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+import 'api/blog_api.dart';
 import 'api/login_api.dart';
 import 'infra/custom_server.dart';
 
@@ -19,5 +20,17 @@ Response _echoHandler(Request request) {
 }
 
 void main(List<String> args) async {
-  await CustomServer().initialize(LoginApi().handler);
+  var cascateHandler = Cascade()
+      .add(
+        LoginApi().handler,
+      )
+      .add(
+        BlogApi().handler,
+      )
+      .handler;
+
+  final handler =
+      Pipeline().addMiddleware(logRequests()).addHandler(cascateHandler);
+
+  await CustomServer().initialize(handler);
 }
