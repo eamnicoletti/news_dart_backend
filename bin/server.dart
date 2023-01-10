@@ -1,8 +1,8 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-import 'api/blog_api.dart';
-import 'api/login_api.dart';
+import 'apis/blog_api.dart';
+import 'apis/login_api.dart';
 import 'infra/custom_server.dart';
 import 'utils/custom_env.dart';
 
