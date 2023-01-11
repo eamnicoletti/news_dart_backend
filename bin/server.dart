@@ -4,6 +4,7 @@ import 'package:shelf_router/shelf_router.dart';
 import 'apis/blog_api.dart';
 import 'apis/login_api.dart';
 import 'infra/custom_server.dart';
+import 'infra/middleware_interception.dart';
 import 'services/noticia_service.dart';
 import 'utils/custom_env.dart';
 
@@ -31,8 +32,10 @@ void main(List<String> args) async {
       )
       .handler;
 
-  final handler =
-      Pipeline().addMiddleware(logRequests()).addHandler(cascateHandler);
+  final handler = Pipeline()
+      .addMiddleware(logRequests())
+      .addMiddleware(MiddlewareInterception().middleware)
+      .addHandler(cascateHandler);
 
   await CustomServer().initialize(
     handler: handler,

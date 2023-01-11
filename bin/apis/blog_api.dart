@@ -20,9 +20,7 @@ class BlogApi {
       List<NoticiaModel> noticias = _service.findAll();
       List<Map> noticiasMap = noticias.map((e) => e.toJson()).toList();
 
-      return Response.ok(jsonEncode(noticiasMap), headers: {
-        'content-type': 'application/json',
-      });
+      return Response.ok(jsonEncode(noticiasMap));
     });
 
     // nova noticia
