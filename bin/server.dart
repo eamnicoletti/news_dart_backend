@@ -38,6 +38,7 @@ void main() async {
   final handler = Pipeline()
       .addMiddleware(logRequests())
       .addMiddleware(MiddlewareInterception().middleware)
+      .addMiddleware(SecurityServiceImp().authorization)
       .addHandler(cascateHandler);
 
   await CustomServer().initialize(
