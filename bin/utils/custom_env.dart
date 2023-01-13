@@ -25,6 +25,6 @@ class CustomEnv {
   }
 
   static Future<String> _readFile() async {
-    return await File('.env').readAsString();
+    return await File(_file).readAsString();
   }
 }

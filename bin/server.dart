@@ -5,6 +5,7 @@ import 'apis/blog_api.dart';
 import 'apis/login_api.dart';
 import 'infra/custom_server.dart';
 import 'infra/middleware_interception.dart';
+import 'infra/security/security_service_imp.dart';
 import 'services/noticia_service.dart';
 import 'utils/custom_env.dart';
 
@@ -22,10 +23,12 @@ Response _echoHandler(Request request) {
   return Response.ok('$message\n');
 }
 
-void main(List<String> args) async {
+void main() async {
+  CustomEnv.fromFile('.env-dev');
+
   var cascateHandler = Cascade()
       .add(
-        LoginApi().handler,
+        LoginApi(SecurityServiceImp()).handler,
       )
       .add(
         BlogApi(NoticiaService()).handler,
