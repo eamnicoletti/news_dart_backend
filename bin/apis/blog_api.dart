@@ -5,7 +5,6 @@ import 'package:shelf_router/shelf_router.dart';
 
 import '../models/noticia_model.dart';
 import '../services/generic_service.dart';
-import '../services/noticia_service.dart';
 
 class BlogApi {
   final GenericService<NoticiaModel> _service;
