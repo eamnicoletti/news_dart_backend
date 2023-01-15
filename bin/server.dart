@@ -26,20 +26,23 @@ Response _echoHandler(Request request) {
 void main() async {
   CustomEnv.fromFile('.env-dev');
 
+  var securityService = SecurityServiceImp();
+
   var cascateHandler = Cascade()
       .add(
-        LoginApi(SecurityServiceImp()).handler,
+        LoginApi(SecurityServiceImp()).getHandler(),
       )
       .add(
-        BlogApi(NoticiaService()).handler,
+        BlogApi(NoticiaService()).getHandler(middlewares: [
+          securityService.authorization,
+          securityService.verifyJWT,
+        ]),
       )
       .handler;
 
   final handler = Pipeline()
-      .addMiddleware(logRequests())
-      .addMiddleware(MiddlewareInterception().middleware)
-      .addMiddleware(SecurityServiceImp().authorization)
-      .addMiddleware(SecurityServiceImp().verifyJWT)
+      .addMiddleware(logRequests()) // global Middlewares
+      .addMiddleware(MiddlewareInterception().middleware) // global Middlewares
       .addHandler(cascateHandler);
 
   await CustomServer().initialize(
