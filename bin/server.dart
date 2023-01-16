@@ -39,10 +39,7 @@ void main() async {
         LoginApi(SecurityServiceImp()).getHandler(),
       )
       .add(
-        BlogApi(NoticiaService()).getHandler(middlewares: [
-          securityService.authorization,
-          securityService.verifyJWT,
-        ]),
+        BlogApi(NoticiaService()).getHandler(isSecurity: true),
       )
       .handler;
 
