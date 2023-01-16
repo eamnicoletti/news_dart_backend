@@ -4,7 +4,9 @@ import 'package:shelf_router/shelf_router.dart';
 import 'apis/blog_api.dart';
 import 'apis/login_api.dart';
 import 'infra/custom_server.dart';
+import 'infra/dependency_injector/dependency_injector.dart';
 import 'infra/middleware_interception.dart';
+import 'infra/security/security_service.dart';
 import 'infra/security/security_service_imp.dart';
 import 'services/noticia_service.dart';
 import 'utils/custom_env.dart';
@@ -26,7 +28,11 @@ Response _echoHandler(Request request) {
 void main() async {
   CustomEnv.fromFile('.env-dev');
 
-  var securityService = SecurityServiceImp();
+  final _di = DependencyInjector();
+
+  _di.register<SecurityService>(() => SecurityServiceImp(), isSingleton: true);
+
+  var securityService = _di.get<SecurityService>();
 
   var cascateHandler = Cascade()
       .add(
