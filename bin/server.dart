@@ -1,3 +1,4 @@
+import 'package:mysql1/mysql1.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
@@ -8,22 +9,18 @@ import 'infra/dependency_injector/injects.dart';
 import 'infra/middleware_interception.dart';
 import 'utils/custom_env.dart';
 
-// Configure routes.
-final _router = Router()
-  ..get('/', _rootHandler)
-  ..get('/echo/<message>', _echoHandler);
-
-Response _rootHandler(Request req) {
-  return Response.ok('Hello, World!\n');
-}
-
-Response _echoHandler(Request request) {
-  final message = request.params['message'];
-  return Response.ok('$message\n');
-}
-
 void main() async {
   CustomEnv.fromFile('.env-dev');
+
+  var conexao = MySqlConnection.connect(
+    ConnectionSettings(
+      host: await CustomEnv.get<String>(key: 'db_host'),
+      port: await CustomEnv.get<int>(key: 'db_port'),
+      user: await CustomEnv.get<String>(key: 'db_user'),
+      password: await CustomEnv.get<String>(key: 'db_pass'),
+      db: await CustomEnv.get<String>(key: 'db_schema'),
+    ),
+  );
 
   final _di = Injects.initialize();
 

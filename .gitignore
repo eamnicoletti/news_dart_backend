@@ -5,5 +5,7 @@
 # Conventional directory for build output.
 build/
 
+volumes/
+
 .env
 .env-dev
