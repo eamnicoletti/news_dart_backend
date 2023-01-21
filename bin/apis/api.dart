@@ -4,7 +4,10 @@ import '../infra/dependency_injector/dependency_injector.dart';
 import '../infra/security/security_service.dart';
 
 abstract class Api {
-  Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false});
+  Handler getHandler({
+    List<Middleware>? middlewares,
+    bool isSecurity = false,
+  });
 
   Handler createHandler({
     required Handler router,
@@ -21,12 +24,9 @@ abstract class Api {
       ]);
     }
 
-    var pipeline = Pipeline();
+    var pipe = Pipeline();
+    middlewares.forEach((m) => pipe = pipe.addMiddleware(m));
 
-    for (var m in middlewares) {
-      pipeline = pipeline.addMiddleware(m);
-    }
-
-    return pipeline.addHandler(router);
+    return pipe.addHandler(router);
   }
 }
