@@ -7,6 +7,7 @@ import 'infra/custom_server.dart';
 import 'infra/database/db_configuration.dart';
 import 'infra/dependency_injector/injects.dart';
 import 'infra/middleware_interception.dart';
+import 'models/usuario_model.dart';
 import 'utils/custom_env.dart';
 
 void main() async {
@@ -15,9 +16,20 @@ void main() async {
   final _di = Injects.initialize();
 
   var conexao = await _di.get<DBConfiguration>().connection;
-  UsuarioDao _usuarioDAO = UsuarioDao(_di.get<DBConfiguration>());
-  // (await _usuarioDAO.findAll()).forEach(print);
-  print(await _usuarioDAO.findOne(1));
+  UsuarioDAO _usuarioDAO = UsuarioDAO(_di.get<DBConfiguration>());
+
+  var usuario = UsuarioModel()
+    ..id = 5
+    ..name = 'Novo Usuario'
+    ..email = 'xpto@gmaeil.com'
+    ..password = '123';
+
+  // _usuarioDAO.findAll().then(print);
+  // _usuarioDAO.findOne(1).then(print);
+  // _usuarioDAO.create(usuario).then(print);
+  // usuario.name = 'ATUALIZADO';
+  // _usuarioDAO.update(usuario).then(print);
+  // _usuarioDAO.delete(5).then(print);
 
   var cascateHandler = Cascade()
       .add(_di.get<LoginApi>().getHandler())
