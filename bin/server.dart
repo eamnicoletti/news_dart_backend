@@ -11,12 +11,12 @@ import 'utils/custom_env.dart';
 void main() async {
   CustomEnv.fromFile('.env-dev');
 
-  final _di = Injects.initialize();
+  final di = Injects.initialize();
 
   var cascateHandler = Cascade()
-      .add(_di.get<LoginApi>().getHandler())
-      .add(_di.get<BlogApi>().getHandler(isSecurity: true))
-      .add(_di.get<UsuarioApi>().getHandler(isSecurity: true))
+      .add(di.get<LoginApi>().getHandler())
+      .add(di.get<BlogApi>().getHandler(isSecurity: true))
+      .add(di.get<UsuarioApi>().getHandler(isSecurity: true))
       .handler;
 
   final handler = Pipeline()

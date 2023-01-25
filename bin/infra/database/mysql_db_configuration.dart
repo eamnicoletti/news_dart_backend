@@ -8,9 +8,10 @@ class MysqlDbConfiguration implements DBConfiguration {
 
   @override
   Future<MySqlConnection> get connection async {
-    if (_connection == null) _connection = await createConnection();
-    if (_connection == null)
+    _connection ??= await createConnection();
+    if (_connection == null) {
       throw Exception('[ERROR/DB] -> Failed Create Connection');
+    }
     return _connection!;
   }
 

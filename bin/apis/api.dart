@@ -17,15 +17,17 @@ abstract class Api {
     middlewares ??= [];
 
     if (isSecurity) {
-      var _securityService = DependencyInjector().get<SecurityService>();
+      var securityService = DependencyInjector().get<SecurityService>();
       middlewares.addAll([
-        _securityService.authorization,
-        _securityService.verifyJWT,
+        securityService.authorization,
+        securityService.verifyJWT,
       ]);
     }
 
     var pipe = Pipeline();
-    middlewares.forEach((m) => pipe = pipe.addMiddleware(m));
+    for (var m in middlewares) {
+      pipe = pipe.addMiddleware(m);
+    }
 
     return pipe.addHandler(router);
   }
