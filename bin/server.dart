@@ -21,7 +21,9 @@ void main() async {
 
   final handler = Pipeline()
       .addMiddleware(logRequests()) // global Middlewares
-      .addMiddleware(MiddlewareInterception().middleware) // global Middlewares
+      .addMiddleware(
+          MiddlewareInterception.contentTypeJson) // global Middlewares
+      .addMiddleware(MiddlewareInterception.cors) // global Middlewares
       .addHandler(cascateHandler);
 
   await CustomServer().initialize(
