@@ -16,6 +16,17 @@ class NoticiasApi extends Api {
   Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false}) {
     Router router = Router();
 
+    // listagem por id
+    router.get('/noticia', (Request req) async {
+      String? id = req.url.queryParameters['id'];
+      if (id == null) return Response(400);
+
+      var noticia = await _service.findOne(int.parse(id));
+      if (noticia == null) return Response(400);
+
+      return Response.ok(jsonEncode(noticia.toJson()));
+    });
+
     // listagem
     router.get('/noticias', (Request req) async {
       List<NoticiaModel> noticias = await _service.findAll();
@@ -35,10 +46,13 @@ class NoticiasApi extends Api {
     });
 
     // /noticias?id=1 // update
-    router.put('/noticias', (Request req) {
-      String? id = req.url.queryParameters['id'];
-      // _service.save(value);
-      return Response.ok('Choveu hoje');
+    router.put('/noticias', (Request req) async {
+      var body = await req.readAsString();
+      var result = await _service.save(
+        NoticiaModel.fromRequest(jsonDecode(body)),
+      );
+
+      return result ? Response(200) : Response(500);
     });
 
     // /noticias?id=1 // delete
