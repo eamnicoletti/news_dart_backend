@@ -42,10 +42,13 @@ class NoticiasApi extends Api {
     });
 
     // /noticias?id=1 // delete
-    router.delete('/noticias', (Request req) {
+    router.delete('/noticias', (Request req) async {
       String? id = req.url.queryParameters['id'];
-      // _service.delete(id);
-      return Response.ok('Choveu hoje');
+      if (id == null) return Response(400);
+
+      var result = await _service.delete(int.parse(id));
+
+      return result ? Response(200) : Response.internalServerError();
     });
 
     return createHandler(
